@@ -1,0 +1,7 @@
+.navbar-icon {
+    @apply text-gray-400 text-3xl cursor-pointer hover:scale-105
+}
+
+menu {
+    @apply py-12
+}
