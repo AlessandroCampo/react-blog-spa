@@ -8,17 +8,13 @@ import { NavLink } from 'react-router-dom';
 export default ({ user }) => {
     return (
 
-        <menu className='flex flex-col justify-between items-start h-screen py-8 ps-6'>
-            <img src={logo} alt="logo" className='w-[58px]' />
+        <menu className='flex flex-col justify-between items-start h-screen py-8 ps-6 fixed'>
+            <img src={logo} alt="logo" className='w-[50px]' />
             <div className="icons-container text-gray-400 flex flex-col gap-6 text-4xl items-center">
-                <NavLink
-                    to="/"
-                >
-                    <IoHomeOutline
-                        className='navbar-icon'
-                    />
+                <NavLink to="/" end>
+                    {({ isActive }) => isActive ? <IoHome className='navbar-icon active' /> : <IoHomeOutline className='navbar-icon' />}
                 </NavLink>
-                <NavLink>
+                {/* <NavLink>
                     <IoSearchOutline
                         className='navbar-icon'
                     />
@@ -27,14 +23,11 @@ export default ({ user }) => {
                     <IoHeartOutline
                         className='navbar-icon'
                     />
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                     to={`/${user?.username}`}
                 >
-                    <RiUserLine
-                        className='navbar-icon'
-
-                    />
+                    {({ isActive }) => isActive ? <RiUserFill className='navbar-icon active' /> : <RiUserLine className='navbar-icon' />}
                 </NavLink>
 
 

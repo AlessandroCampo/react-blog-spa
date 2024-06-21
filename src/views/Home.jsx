@@ -125,14 +125,7 @@ const Home = () => {
             />
 
             <div className="home-container overflow-auto">
-
-                <aside className="fixed-aside">
-                    <Navbar
-                        user={user}
-                    />
-                </aside>
-
-                <div className="home-middle w-1/2 flex items-center flex-col ms-[25%] py-12">
+                <div className="home-middle w-full flex items-center flex-col py-12">
                     <CreatePost
                         user={user}
                         setPostList={setPostList}
@@ -159,7 +152,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="home-right w-1/4"></div>
+                <div className="home-right w-1/2"></div>
 
 
             </div>

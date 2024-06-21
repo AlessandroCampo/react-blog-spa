@@ -11,13 +11,20 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './views/Home.jsx';
-
+import Layout from './views/Layout.jsx';
 
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    path: '/',
+    element: <Layout />, // Use the layout component as the parent route
+    children: [
+      {
+        path: '',
+        element: <Home />, // The Home component will be rendered inside the layout
+      },
+      // Add more nested routes here if needed
+    ],
   },
 ]);
 
