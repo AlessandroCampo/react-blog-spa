@@ -1,5 +1,5 @@
 .navbar-icon {
-    @apply text-gray-400 text-3xl cursor-pointer hover:scale-105
+    @apply text-gray-400 text-3xl cursor-pointer hover:scale-105 my-2
 }
 
 menu {
