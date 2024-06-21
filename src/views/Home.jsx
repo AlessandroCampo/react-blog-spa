@@ -1,55 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import CreatePost from "../components/PostComponents/CreatePost.jsx"
 import Post from "../components/PostComponents/Post";
 import Navbar from "../components/Navbar/Navbar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { GlobalStateContext } from "../GlobalState.jsx";
+
 
 
 
 const Home = () => {
 
     const apiUrl = import.meta.env.VITE_API_URL;
-
+    const { state } = useContext(GlobalStateContext);
 
     const [postList, setPostList] = useState([]);
-    const [user, setUser] = useState(undefined);
     const [lastPage, setLastPage] = useState(1);
     const [totalPages, setTotalPages] = useState(2);
+    const user = state.user;
 
     const postContainer = useRef(null);
 
 
-    let authToken = '';
-    const fetchToken = async () => {
-        try {
-            const userData = {
-                username: 'Aleks7',
-                password: 'Pass123!'
-            }
-            const { data } = await axios.post(`${apiUrl}users/login`, userData);
-            if (data) {
-
-                setUser(data.user);
-                authToken = data.token;
-                localStorage.setItem('authTokenReact', data.token)
-                return data.token
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    const loginThenFetchPosts = async () => {
-        const token = await fetchToken();
-        await fetchPosts(token);
-    }
-
-
-
-    const fetchPosts = async (token, page = 1) => {
-        console.log('calls counter')
+    const fetchPosts = async (page = 1) => {
+        const token = localStorage.getItem('authTokenReact');
         if (!token || page > totalPages) return
 
         try {
@@ -72,8 +47,8 @@ const Home = () => {
 
     //get Token
     useEffect(() => {
-        console.log('home mounted')
-        loginThenFetchPosts();
+        console.log('home mounted', state)
+        fetchPosts();
     }, [])
 
 
@@ -93,7 +68,7 @@ const Home = () => {
                     const token = localStorage.getItem('authTokenReact');
                     setLastPage(prevPage => {
                         const nextPage = prevPage + 1;
-                        fetchPosts(token, nextPage);
+                        fetchPosts(nextPage);
                         return nextPage;
                     })
                     return
@@ -131,8 +106,7 @@ const Home = () => {
                         setPostList={setPostList}
                         notifyError={notifyError}
                         notifySuccess={notifySuccess}
-                        onPostCreate={(token) => { fetchPosts(token) }}
-                        token={authToken}
+                        onPostCreate={(token) => { fetchPosts() }}
                     />
                     <div className="posts-container" ref={postContainer}>
                         {
@@ -152,7 +126,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="home-right w-1/2"></div>
+
 
 
             </div>

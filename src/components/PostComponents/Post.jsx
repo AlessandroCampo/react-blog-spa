@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import { FaRegComment, FaRegHeart, FaRetweet } from "react-icons/fa";
 import './post.css';
 import { formatTimestamp } from "../../utils";
-import CustomizedMenus from "../../Dropdown";
+import CustomizedMenus from "../Dropdown";
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import axios from 'axios';
 
@@ -13,6 +13,7 @@ export default ({ user, post, setPostList }) => {
     const [editing, setEditing] = useState(false);
     const newContent = useRef('');
     const apiUrl = import.meta.env.VITE_API_URL;
+    console.log(post)
 
     const editPost = async () => {
 
@@ -64,7 +65,7 @@ export default ({ user, post, setPostList }) => {
                     </div>
                 </div>
                 {
-                    post.userId === user.id && <CustomizedMenus setPostList={setPostList} setEditing={setEditing} post={post} />
+                    post?.userId === user.id && <CustomizedMenus setPostList={setPostList} setEditing={setEditing} post={post} />
                 }
 
             </div>

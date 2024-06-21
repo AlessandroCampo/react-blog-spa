@@ -12,18 +12,25 @@ import {
 } from "react-router-dom";
 import Home from './views/Home.jsx';
 import Layout from './views/Layout.jsx';
+import { GlobalStateProvider } from './GlobalState.jsx';
+import UserPage from './views/UserPage.jsx';
+
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />, // Use the layout component as the parent route
+    element: <Layout />,
     children: [
       {
         path: '',
-        element: <Home />, // The Home component will be rendered inside the layout
+        element: <Home />,
       },
-      // Add more nested routes here if needed
+      {
+        path: ':username',
+        element: <UserPage />
+      }
+
     ],
   },
 ]);
@@ -31,6 +38,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GlobalStateProvider>
+      <RouterProvider router={router} />
+    </GlobalStateProvider>
   </React.StrictMode>,
 )

@@ -5,9 +5,14 @@ import { RiUserLine, RiUserFill } from 'react-icons/ri';
 import { Avatar } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-export default ({ user }) => {
-    return (
+import { useState, useContext } from 'react';
+import { GlobalStateContext } from '../../GlobalState';
 
+
+export default () => {
+    const { state } = useContext(GlobalStateContext);
+    const user = state?.user;
+    return (
         <menu className='flex flex-col justify-between items-start h-screen py-8 ps-6 fixed'>
             <img src={logo} alt="logo" className='w-[50px]' />
             <div className="icons-container text-gray-400 flex flex-col gap-6 text-4xl items-center">
