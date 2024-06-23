@@ -1,5 +1,5 @@
 .wrapper {
-    @apply flex flex-col w-[350px] gap-6 bg-input py-6 rounded-xl min-h-[220px] justify-between text-gray-400
+    @apply flex flex-col gap-6 bg-input py-6 rounded-xl min-h-[220px] justify-between text-gray-400
 }
 
 .wrapper .upper {

@@ -14,6 +14,7 @@ import Home from './views/Home.jsx';
 import Layout from './views/Layout.jsx';
 import { GlobalStateProvider } from './GlobalState.jsx';
 import UserPage from './views/UserPage.jsx';
+import PostPage from './views/PostPage.jsx';
 
 
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: ':username',
         element: <UserPage />
+      },
+      {
+        path: '/post/:slug',
+        element: <PostPage />
       }
 
     ],

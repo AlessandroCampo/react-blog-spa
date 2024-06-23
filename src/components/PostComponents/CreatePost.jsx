@@ -94,7 +94,8 @@ export default ({ user, setPostList, notifyError, onPostCreate, notifySuccess })
             }
         } catch (err) {
             console.error(err);
-            notifyError(err.message);
+            notifyError(err?.response?.data?.errors[0].msg || err.message);
+            setCreatingPost(false);
             return
         }
         onPostCreate(token);
@@ -106,7 +107,7 @@ export default ({ user, setPostList, notifyError, onPostCreate, notifySuccess })
 
 
     return (
-        <div className="wrapper" ref={wrapper} id="createPostWrapper">
+        <div className="wrapper w-[350px]" ref={wrapper} id="createPostWrapper">
 
             <div className="upper">
                 <Avatar

@@ -110,10 +110,10 @@ const Home = () => {
                         {
                             postList.map((p, i) => {
                                 return <Post
-                                    user={user}
                                     key={p.id || `post-${i}`}
                                     post={p}
                                     setPostList={setPostList}
+                                    width={350}
 
 
                                 />

@@ -1,24 +1,29 @@
 import { useState, useRef, useContext } from "react";
 import Avatar from '@mui/material/Avatar';
-import { FaRegComment, FaRegHeart, FaRetweet } from "react-icons/fa";
+import { FaRegComment, FaRegHeart } from "react-icons/fa";
+import { GrSync } from "react-icons/gr";
+
+
 import './post.css';
 import { formatTimestamp } from "../../utils";
 import CustomizedMenus from "./PostDropdown";
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
-import { GrSync } from "react-icons/gr";
+
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GlobalStateContext } from "../../GlobalState";
 
 
 
-export default ({ user, post, setPostList }) => {
+
+export default ({ post, setPostList, width, isLinkClickable = true }) => {
 
     const { state, setState } = useContext(GlobalStateContext);
     const [editing, setEditing] = useState(false);
     const newContent = useRef('');
     const apiUrl = import.meta.env.VITE_API_URL;
     const isUserPost = post?.userId == state?.user?.id;
+    const navigate = useNavigate();
 
 
 
@@ -51,21 +56,33 @@ export default ({ user, post, setPostList }) => {
         setEditing(false);
     }
 
+    const showUserPage = (e) => {
+        e.preventDefault()
+        navigate(`/${post?.user?.username}`);
+    };
+
+    const navigateToPostDetail = (e) => {
+        if (isLinkClickable) {
+            navigate(`/post/${post?.slug}`);
+        } else {
+            e.preventDefault();
+        }
+    };
 
     return (
-        <div className="wrapper">
+
+        <div className="wrapper" style={{ width: width }} onClick={navigateToPostDetail}>
             <div className="upper">
                 <div className="upper-left flex gap-3">
-                    <Link
-                        to={`/${post?.user?.username}`}
-                    >
-                        <Avatar
-                            sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48 }}
-                            alt={post?.user?.username}
-                            src={post.user?.avatar || ''}
 
-                        />
-                    </Link>
+                    <Avatar
+                        sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48 }}
+                        alt={post?.user?.username}
+                        src={post?.user?.avatar || ''}
+                        onClick={showUserPage}
+
+                    />
+
 
                     <div className="authors-info flex flex-col text-sm">
                         <span className="font-bold">
@@ -82,6 +99,7 @@ export default ({ user, post, setPostList }) => {
                         setEditing={setEditing}
                         post={post}
                         isUserPost={isUserPost}
+
 
                     />
                 }
@@ -123,7 +141,7 @@ export default ({ user, post, setPostList }) => {
                             className="icon-common"
                         />
                         <span className="counter">
-                            {post?.likes.length || 0}
+                            {post?.likes?.length || 0}
                         </span>
                     </div>
                     <div className="iconandcounter">
@@ -131,7 +149,7 @@ export default ({ user, post, setPostList }) => {
                             className="icon-common"
                         />
                         <span className="counter">
-                            {post?.comments.length || 0}
+                            {post?.comments?.length || 0}
                         </span>
                     </div>
                     <div className="iconandcounter">
@@ -139,10 +157,11 @@ export default ({ user, post, setPostList }) => {
                             className="icon-common"
                         />
                         <span className="counter">
-                            {post?.comments.length || 0}
+                            {post?.comments?.length || 0}
                         </span>
                     </div>
                 </div>
+
                 {
                     editing &&
                     <button onClick={editPost}>
@@ -152,5 +171,7 @@ export default ({ user, post, setPostList }) => {
 
             </div>
         </div>
+
+
     )
 };

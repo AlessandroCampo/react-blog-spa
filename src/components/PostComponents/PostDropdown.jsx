@@ -137,7 +137,7 @@ export default function CustomizedMenus({ setPostList, setEditing, post, isUserP
                 variant="contained"
                 disableElevation
                 onClick={handleClick}
-                style={{ backgroundColor: 'transparent', color: '#DAA520' }}
+                style={{ backgroundColor: 'transparent', color: '#DAA520', zIndex: 10 }}
 
             >
                 <MoreHorizIcon
@@ -154,8 +154,9 @@ export default function CustomizedMenus({ setPostList, setEditing, post, isUserP
                 onClose={handleClose}
             >
                 {
-                    options.map(opt => (
+                    options.map((opt, index) => (
                         <MenuItem onClick={opt.cb} disableRipple
+                            key={`option-${index}`}
                         >
                             {opt.icon}
                             {opt.label}
