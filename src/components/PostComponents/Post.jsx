@@ -1,19 +1,26 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import Avatar from '@mui/material/Avatar';
 import { FaRegComment, FaRegHeart, FaRetweet } from "react-icons/fa";
 import './post.css';
 import { formatTimestamp } from "../../utils";
-import CustomizedMenus from "../Dropdown";
+import CustomizedMenus from "./PostDropdown";
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import { GrSync } from "react-icons/gr";
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import { GlobalStateContext } from "../../GlobalState";
+
 
 
 export default ({ user, post, setPostList }) => {
 
+    const { state, setState } = useContext(GlobalStateContext);
     const [editing, setEditing] = useState(false);
     const newContent = useRef('');
     const apiUrl = import.meta.env.VITE_API_URL;
-    console.log(post)
+    const isUserPost = post?.userId == state?.user?.id;
+
+
 
     const editPost = async () => {
 
@@ -30,7 +37,7 @@ export default ({ user, post, setPostList }) => {
             if (response) {
 
                 setPostList(currList => currList.map(p => {
-                    if (p.id === post.id) {
+                    if (p?.id === post?.id) {
                         return { ...p, content: newContent.current.value }
                     }
                     return { ...p }
@@ -49,12 +56,17 @@ export default ({ user, post, setPostList }) => {
         <div className="wrapper">
             <div className="upper">
                 <div className="upper-left flex gap-3">
-                    <Avatar
-                        sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48 }}
-                        alt={post?.user?.username}
-                        src={post.user?.avatar || ''}
+                    <Link
+                        to={`/${post?.user?.username}`}
+                    >
+                        <Avatar
+                            sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48 }}
+                            alt={post?.user?.username}
+                            src={post.user?.avatar || ''}
 
-                    />
+                        />
+                    </Link>
+
                     <div className="authors-info flex flex-col text-sm">
                         <span className="font-bold">
                             {post?.user?.username}
@@ -65,7 +77,13 @@ export default ({ user, post, setPostList }) => {
                     </div>
                 </div>
                 {
-                    post?.userId === user.id && <CustomizedMenus setPostList={setPostList} setEditing={setEditing} post={post} />
+                    <CustomizedMenus
+                        setPostList={setPostList}
+                        setEditing={setEditing}
+                        post={post}
+                        isUserPost={isUserPost}
+
+                    />
                 }
 
             </div>
@@ -117,7 +135,7 @@ export default ({ user, post, setPostList }) => {
                         </span>
                     </div>
                     <div className="iconandcounter">
-                        <FaRetweet
+                        <GrSync
                             className="icon-common"
                         />
                         <span className="counter">

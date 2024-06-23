@@ -6,7 +6,8 @@ import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Dialogue from './Dialogue.jsx';
+import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
+import Dialogue from '../Dialogue.jsx';
 import axios from 'axios';
 
 
@@ -52,11 +53,12 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function CustomizedMenus({ setPostList, setEditing, post }) {
+export default function CustomizedMenus({ setPostList, setEditing, post, isUserPost }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [openDeleteDialogue, setopenDeleteDialogue] = React.useState(false);
     const open = Boolean(anchorEl);
     const apiUrl = import.meta.env.VITE_API_URL;
+
 
 
     const handleClick = (event) => {
@@ -91,6 +93,29 @@ export default function CustomizedMenus({ setPostList, setEditing, post }) {
         setEditing(true);
         handleClose();
     }
+
+
+    const options =
+        isUserPost ?
+            [
+                {
+                    label: 'Edit',
+                    cb: allowEdit,
+                    icon: <EditIcon />
+                },
+                {
+                    label: 'Delete',
+                    cb: () => { setopenDeleteDialogue(true), handleClose() },
+                    icon: <DeleteIcon />
+                }
+            ] :
+            [
+                {
+                    label: 'Follow',
+                    cb: () => { console.log('to do follow logic') },
+                    icon: <PersonAddSharpIcon />
+                }
+            ]
 
     return (
         <div>
@@ -128,14 +153,16 @@ export default function CustomizedMenus({ setPostList, setEditing, post }) {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={allowEdit} disableRipple>
-                    <EditIcon />
-                    Edit
-                </MenuItem>
-                <MenuItem onClick={() => { setopenDeleteDialogue(true), handleClose() }} disableRipple>
-                    <DeleteIcon />
-                    Delete
-                </MenuItem>
+                {
+                    options.map(opt => (
+                        <MenuItem onClick={opt.cb} disableRipple
+                        >
+                            {opt.icon}
+                            {opt.label}
+                        </MenuItem>
+                    ))
+                }
+
             </StyledMenu>
         </div>
     );

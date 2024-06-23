@@ -7,7 +7,7 @@ export const GlobalStateContext = createContext();
 // Create a provider component
 export const GlobalStateProvider = ({ children }) => {
     const [state, setState] = useState({
-        user: null,
+        user: undefined,
 
     });
 

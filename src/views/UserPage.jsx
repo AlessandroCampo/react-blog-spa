@@ -1,20 +1,24 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import axios from "axios";
 import { Avatar } from "@mui/material";
 import Post from "../components/PostComponents/Post";
+import './styles/UserPage.css'
+import { GlobalStateContext } from "../GlobalState";
 
 
 
 export default () => {
     let { username } = useParams();
-    console.log(username)
     const apiUrl = import.meta.env.VITE_API_URL;
+    const { state, setState } = useContext(GlobalStateContext);
     const [user, setUser] = useState(undefined);
     const [postList, setPostList] = useState([]);
     const [lastPage, setLastPage] = useState(1);
     const [totalPages, setTotalPages] = useState(2);
     const postContainer = useRef(null);
+    // const [isLoggedUserPage, setIsLoggedUserPage] = useState(false);
+    const isLoggedUserPage = username === state?.user?.username;
 
     const fetchUserData = async () => {
 
@@ -25,12 +29,16 @@ export default () => {
             Authorization: `Bearer ${token}`
         };
 
+
+
         try {
             const { data } = await axios.get(`${apiUrl}users/${username}`, { headers })
             if (data) {
                 console.log(data.user);
                 setUser(data.user);
                 setPostList([...data.user.posts])
+                console.log(state.user)
+
             }
         } catch (err) {
             console.error(err);
@@ -45,27 +53,27 @@ export default () => {
     return (
         <>
             <div className="user-page py-12 w-full  flex flex-col items-center">
-                <div className="profile-wrapper  flex flex-col w-[535px] gap-6 bg-input py-8 rounded-xl  justify-between text-gray-400 p-6">
-                    <div className="profie-upper flex justify-between max-x-full">
+                <div className="profile-wrapper  flex flex-col gap-6 bg-input py-8 rounded-xl  justify-between text-gray-400 p-6">
+                    <div className="profie-upper flex justify-between items-center">
                         <Avatar
-                            sx={{ bgcolor: '#DAA520', color: 'gray', width: 90, height: 90, border: '3px solid lightgray' }}
+                            sx={{ bgcolor: '#DAA520', color: 'gray', width: 100, height: 100, border: '3px solid lightgray' }}
                             alt={user?.username}
-                            src={user?.profilePic || ''}
+                            src={user?.avatar || ''}
 
                         />
 
 
-                        <div className="user-infos flex flex-col gap-4 items-start justify-end w-2/3">
+                        <div className="user-infos flex flex-col gap-4 items-start justify-end ms-12">
                             <div className="infos-upper flex items-center gap-6 w-full">
                                 <div className="font-bold text-2xl text-gray-200">
                                     {username}
                                 </div>
 
                                 <div className="options flex items-center gap-2">                                    <button>
-                                    Follow
+                                    {isLoggedUserPage ? 'Edit Profile' : 'Follow'}
                                 </button>
                                     <button>
-                                        Text **
+                                        {isLoggedUserPage ? 'Hidden Posts' : 'Message'}
                                     </button>
                                 </div>
                             </div>

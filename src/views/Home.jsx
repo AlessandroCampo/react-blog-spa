@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { GlobalStateContext } from "../GlobalState.jsx";
+import { Error } from "@mui/icons-material";
 
 
 
@@ -20,34 +21,31 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(2);
     const user = state.user;
 
+
     const postContainer = useRef(null);
 
 
     const fetchPosts = async (page = 1) => {
         const token = localStorage.getItem('authTokenReact');
         if (!token || page > totalPages) return
+        const headers = {
+            Authorization: `Bearer ${token}`
+        };
 
-        try {
+        axios.get(`${apiUrl}posts?page=${page}`, { headers })
+            .then((res) => {
+                if (res) {
+                    console.log(res);
+                    setTotalPages(res.data.totalPages); // Use res.data.totalPages here
+                    setPostList(oldList => [...oldList, ...res.data.allPosts]);
+                }
+            })
+            .catch(err => console.error(err));
 
-            const headers = {
-                Authorization: `Bearer ${token}`
-            };
-
-            const { data } = await axios.get(`${apiUrl}posts?page=${page}`, { headers });
-            (data)
-            if (data) {
-                setPostList(oldList => [...data.allPosts]);
-                setTotalPages(data.totalPages)
-                console.log(data)
-            }
-        } catch (err) {
-            console.error(err);
-        }
     }
 
-    //get Token
+
     useEffect(() => {
-        console.log('home mounted', state)
         fetchPosts();
     }, [])
 

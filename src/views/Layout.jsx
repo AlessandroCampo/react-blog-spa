@@ -19,12 +19,13 @@ export default () => {
             }
             const { data } = await axios.post(`${apiUrl}users/login`, userData);
             if (data) {
-                console.log(data)
+                localStorage.setItem('authTokenReact', data.token)
                 setState((prevState) => ({
                     ...prevState,
                     user: data.user,
                     token: data.token,
                 }));
+
             }
         } catch (err) {
             console.error(err);
