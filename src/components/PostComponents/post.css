@@ -27,3 +27,7 @@
     font-size: 15px !important;
     font-weight: bold;
 }
+
+.custom-placeholder::placeholder {
+    @apply text-gray-500 !important;
+}

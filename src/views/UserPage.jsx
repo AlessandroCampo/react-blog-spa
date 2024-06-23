@@ -53,7 +53,7 @@ export default () => {
     return (
         <>
             <div className="user-page py-12 w-full  flex flex-col items-center">
-                <div className="profile-wrapper  flex flex-col gap-6 bg-input py-8 rounded-xl  justify-between text-gray-400 p-6">
+                <div className="profile-wrapper  flex flex-col gap-6 bg-input py-8 rounded-xl  justify-between text-gray-400 p-6 w-[600px]">
                     <div className="profie-upper flex justify-between items-center">
                         <Avatar
                             sx={{ bgcolor: '#DAA520', color: 'gray', width: 100, height: 100, border: '3px solid lightgray' }}
@@ -122,6 +122,7 @@ export default () => {
                                 key={p?.id || `post-${i}`}
                                 post={{ ...p, user: user }}
                                 setPostList={setPostList}
+                                width={600}
 
 
                             />

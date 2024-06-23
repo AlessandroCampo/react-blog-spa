@@ -71,12 +71,12 @@ export default ({ post, setPostList, width, isLinkClickable = true }) => {
 
     return (
 
-        <div className="wrapper" style={{ width: width }} onClick={navigateToPostDetail}>
+        <div className="wrapper" style={{ width: width }}>
             <div className="upper">
                 <div className="upper-left flex gap-3">
 
                     <Avatar
-                        sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48 }}
+                        sx={{ bgcolor: '#DAA520', color: 'gray', width: 48, height: 48, cursor: 'pointer' }}
                         alt={post?.user?.username}
                         src={post?.user?.avatar || ''}
                         onClick={showUserPage}
@@ -105,14 +105,14 @@ export default ({ post, setPostList, width, isLinkClickable = true }) => {
                 }
 
             </div>
-            <div className="px-6">
+            <div className="px-5" onClick={navigateToPostDetail}>
 
 
                 <TextareaAutosize
                     defaultValue={post?.content}
                     readOnly={!editing}
                     ref={newContent}
-                    className={`${editing ? 'cursor-text border-2 border-white' : 'cursor-default border-0'} w-full max-h-[160px]`}
+                    className={`${editing ? 'cursor-text border-2 border-white' : 'cursor-pointer border-0'} w-full max-h-[160px]`}
                 >
 
                 </TextareaAutosize>
@@ -162,6 +162,7 @@ export default ({ post, setPostList, width, isLinkClickable = true }) => {
                     </div>
                 </div>
 
+
                 {
                     editing &&
                     <button onClick={editPost}>
@@ -169,6 +170,12 @@ export default ({ post, setPostList, width, isLinkClickable = true }) => {
                     </button>
                 }
 
+            </div>
+            <div className="add-comment px-6 w-full">
+                <input type="text"
+                    placeholder="Add your opinion no one asked for here..."
+                    className="w-full custom-placeholder"
+                />
             </div>
         </div>
 
